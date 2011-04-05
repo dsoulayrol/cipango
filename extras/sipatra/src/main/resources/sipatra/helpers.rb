@@ -190,6 +190,16 @@ module Sipatra
         uri
       end
 
+      def set_request_uri(value)
+        if request?
+          uri = sip_factory.createURI(value)
+          message.setRequestURI(uri)
+        else
+          log.warn "Cannot set the Request URI on responses."
+        end
+      end
+
+
       def push_route(route)
         message.pushRoute(sip_factory.createAddress(route))
       end    

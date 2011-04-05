@@ -199,9 +199,12 @@ module Sipatra
         end
       end
 
-
-      def push_route(route)
-        message.pushRoute(sip_factory.createAddress(route))
+      def push_route(route, options = {})
+        if request?
+          message.pushRoute(create_uri(route, options))
+        else
+          log.warn "Cannot add routes on responses."
+        end
       end    
       
       private

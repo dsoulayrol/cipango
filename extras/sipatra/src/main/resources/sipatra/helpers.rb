@@ -166,7 +166,11 @@ module Sipatra
         unless args.empty?
           raise ArgumentError, "last argument should be a Hash" unless args.first.kind_of? Hash
           args.first.each_pair do |name, value|
-            response.addHeader(name.to_s, value.to_s)
+            if value.kind_of? Array
+              value.each { |val| response.addHeader(name.to_s, val.to_s)}
+            else
+              response.addHeader(name.to_s, value.to_s)
+            end
           end
         end
         if block_given?

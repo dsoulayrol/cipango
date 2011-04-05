@@ -159,7 +159,7 @@ module Sipatra
         message.removeHeader(name.to_s)
       end
       
-      def send_response(status, *args)
+      def send_response(status, *args, &block)
         create_args = [convert_status_code(status)]
         create_args << args.shift unless args.empty? || args.first.kind_of?(Hash)
         response = message.createResponse(*create_args)
@@ -173,9 +173,12 @@ module Sipatra
             end
           end
         end
-        if block_given?
-          yield response
-        end
+        if !block.nil?
+          msg_tmp = message
+          @message = response
+          instance_eval(&block)
+          @message = msg_tmp
+        end 
         response.send
       end
       

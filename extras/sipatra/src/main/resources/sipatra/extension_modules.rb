@@ -3,6 +3,10 @@ module Sipatra
     def uri
       requestURI
     end
+
+    def set_content(content, content_type)
+      setContent(content.to_java_bytes, content_type)
+    end
   end
   
   module SessionExtension
